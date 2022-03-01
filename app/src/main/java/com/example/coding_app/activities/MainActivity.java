@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import com.example.coding_app.R;
 import com.example.coding_app.fragments.ChallengeListFragment;
+import com.example.coding_app.fragments.CodingEnvironmentFragment;
 import com.example.coding_app.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if(item.getItemId() == R.id.bottom_nav_code){
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.main_fragment_container_view, ChallengeListFragment.class, null)
+                            .replace(R.id.main_fragment_container_view, CodingEnvironmentFragment.class, null)
                             .setReorderingAllowed(true)
                             .commit();
                 }
