@@ -1,4 +1,4 @@
-package com.example.coding_app.models;
+package com.example.coding_app.models.Judge;
 
 public class JudgeData {
     public String source_code;

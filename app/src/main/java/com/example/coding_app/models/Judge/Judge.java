@@ -1,7 +1,9 @@
-package com.example.coding_app.models;
+package com.example.coding_app.models.Judge;
 
 import android.content.Context;
+import android.os.Handler;
 
+import com.example.coding_app.fragments.CodingEnvironmentFragment;
 import com.google.gson.Gson;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -21,23 +23,21 @@ public class Judge {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
     private static JudgeData lastResponse;
-    private static JudgeLanguage[] languages;
-    private static JudgeStatus[] statuses;
 
     //add necessary headers to async http client
-    public static void init(){
+    public static void init(Context context){
         //add headers
         client.addHeader("content-type", "application/json");
         client.addHeader("x-rapidapi-host", HOST);
         client.addHeader("x-rapidapi-key", AUTH_TOKEN);
+    }
 
-        //get languages
-
-        //get statuses
+    public static boolean isProcessingRequest(){
+        return (lastResponse != null);
     }
 
     //Send a single code submission to Judge
-    public static void createSubmission(Context context, String sourceCode, int languageID, String input){
+    public static void createSubmission(CodingEnvironmentFragment cef, String sourceCode, int languageID, String input){
         JSONObject params = new JSONObject();
         StringEntity entity;
         try {
@@ -51,7 +51,7 @@ public class Judge {
             return;
         }
 
-        client.post(context,
+        client.post(cef.getContext(),
                 BASE_URL + "/submissions/?base64_encoded=false&wait=false",
                 entity,
                 "application/json",
@@ -61,34 +61,23 @@ public class Judge {
                         String responseString = new String(responseBody);
                         Gson gson = new Gson();
                         lastResponse = gson.fromJson(responseString, JudgeData.class);
+                        getSubmission(cef);
                         return;
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        if(responseBody != null){
-                        }
-                        return;
+                        lastResponse = null;
                     }
                 });
     }
 
-    public static void getSubmission(Context context){
+    public static void getSubmission(CodingEnvironmentFragment cef){
         if(lastResponse == null) return;
 
-        JSONObject params = new JSONObject();
-        StringEntity entity;
-        try {
-            entity = new StringEntity(params.toString());
-        }
-        catch(Exception e){
-            e.printStackTrace();
-            return;
-        }
-
-        client.get(context,
-                BASE_URL + "/submissions/" + lastResponse.token + "?base64_encoded=false&wait=false&fields=stdout,stderr,status_id,language_id",
-                entity,
+        client.get(cef.getContext(),
+                BASE_URL + "/submissions/" + lastResponse.token + "?base64_encoded=false&wait=false&fields=*",
+                null,
                 "application/json",
                 new AsyncHttpResponseHandler() {
                     @Override
@@ -96,17 +85,25 @@ public class Judge {
                         String responseString = new String(responseBody);
                         Gson gson = new Gson();
                         JudgeData response = gson.fromJson(responseString, JudgeData.class);
-                        return;
+
+                        if(response.status_id >= 3){  //if request is finished processing
+                            cef.handleJudgeResponse(response);
+                            lastResponse = null;
+                        }
+                        else{                         //otherwise, try again after a delay
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable(){
+                                @Override
+                                public void run() {
+                                    getSubmission(cef);
+                                }
+                            }, 100);
+                        }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        if(responseBody != null){
-                            String responseString = new String(responseBody);
-                            Gson gson = new Gson();
-                            JudgeData response = gson.fromJson(responseString, JudgeData.class);
-                        }
-                        return;
+                        lastResponse = null;
                     }
                 });
     }
