@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,6 +26,7 @@ public class CodingEnvironmentFragment extends Fragment {
     private static CodeView codeView;
     private static Spinner langSpinner;
     private static Button submitButton;
+    private static WebView challengeDescription;
 
     public CodingEnvironmentFragment() {
     }
@@ -45,6 +47,10 @@ public class CodingEnvironmentFragment extends Fragment {
 
         initLanguageSpinner();
         initSubmitButton();
+
+        //challenge description webview
+        challengeDescription = rootView.findViewById(R.id.challenge_description);
+        //challengeDescription.loadDataWithBaseURL(null, test_html, "text/html", "UTF-8", null);
 
         return rootView;
     }
