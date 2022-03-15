@@ -16,6 +16,9 @@ import com.example.coding_app.models.language.LanguageManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mainBottomNavView;

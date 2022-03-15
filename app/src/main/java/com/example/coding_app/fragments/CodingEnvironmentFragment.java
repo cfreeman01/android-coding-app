@@ -16,11 +16,14 @@ import com.amrdeveloper.codeview.CodeView;
 import com.example.coding_app.R;
 import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.Judge.JudgeData;
+import com.example.coding_app.models.challenge.Challenge;
+import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.language.LanguageManager;
 
 public class CodingEnvironmentFragment extends Fragment {
 
     private static String currentLanguage = LanguageManager.getLanguages()[0];
+    private static Challenge currentChallenge;
 
     private static View rootView;
     private static CodeView codeView;
@@ -29,6 +32,7 @@ public class CodingEnvironmentFragment extends Fragment {
     private static WebView challengeDescription;
 
     public CodingEnvironmentFragment() {
+        this.currentChallenge = ChallengeManager.getChallenge("Longest Common Prefix");
     }
 
     public CodingEnvironmentFragment getCEFragment(){ return this; }
@@ -50,7 +54,11 @@ public class CodingEnvironmentFragment extends Fragment {
 
         //challenge description webview
         challengeDescription = rootView.findViewById(R.id.challenge_description);
-        //challengeDescription.loadDataWithBaseURL(null, test_html, "text/html", "UTF-8", null);
+        if(currentChallenge != null) {
+            challengeDescription.loadDataWithBaseURL(null,
+                    currentChallenge.getDescriptionHTML(),
+                    "text/html", "UTF-8", null);
+        }
 
         return rootView;
     }

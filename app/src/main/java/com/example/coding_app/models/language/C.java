@@ -11,18 +11,12 @@ import java.util.regex.Pattern;
 
 public class C extends Language {
 
-    private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(break|case" +
-            "|char|continue|default|do|double|else" +
-            "|enum|float|for|if" +
-            "|int|register|signed|unsigned|const" +
-            "|long|goto|sizeof|union|struct|auto|extern|typedef" +
-            "|return|short|static|switch" +
-            "|void|volatile|while)\\b");
+    private static final Pattern PATTERN_KEYWORDS = Pattern.compile("\\b(break|case" + "|char|continue|default|do|double|else" + "|enum|float|for|if" + "|int|register|signed|unsigned|const" + "|long|goto|sizeof|union|struct|auto|extern|typedef" + "|return|short|static|switch" + "|void|volatile|while)\\b");
 
     private static final Pattern PATTERN_BUILTINS = Pattern.compile("[,:;[->]{}()]");
     private static final Pattern PATTERN_COMMENT = Pattern.compile("//[^\\n]*" + "|" + "/\\*(.|\\R)*?\\*/");
     private static final Pattern PATTERN_ATTRIBUTE = Pattern.compile("\\.[a-zA-Z0-9_]+");
-    private static final Pattern PATTERN_OPERATION =Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
+    private static final Pattern PATTERN_OPERATION = Pattern.compile( ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*");
     private static final Pattern PATTERN_GENERIC = Pattern.compile("<[a-zA-Z0-9,<>]+>");
     private static final Pattern PATTERN_NUMBERS = Pattern.compile("\\b(\\d*[.]?\\d+)\\b");
     private static final Pattern PATTERN_CHAR = Pattern.compile("'[a-zA-Z]'");
