@@ -1,0 +1,15 @@
+{
+  "highlighter": {
+    "\\b(False|await|else|import|pass|None|break|except|in|raise|True|class|finally|is|return|and|continue|for|lambda|try|as|def|from|nonlocal|while|assert|del|global|not|with|async|elif|if|or|yield)\\b": "monokia_pro_pink",
+    "[,:;[->]{}()]": "monokia_pro_white",
+    ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*": "monokia_pro_pink",
+    "\\b(\\d*[.]?\\d+)\\b": "monokia_pro_purple",
+    "\".*\"": "monokia_pro_orange",
+    "\\.[a-zA-Z0-9_]+": "monokia_pro_sky",
+    "0x[0-9a-fA-F]+": "monokia_pro_purple",
+    "'[a-zA-Z]'": "monokia_pro_green",
+    "#(?!TODO )[^\\n]*": "monokia_pro_grey"
+  },
+  "judge_id": 71,
+  "name": "Python 3"
+}

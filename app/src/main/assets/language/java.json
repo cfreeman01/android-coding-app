@@ -1,0 +1,16 @@
+{
+  "highlighter": {
+    "[,:;[->]{}()]": "monokia_pro_white",
+    ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*": "monokia_pro_pink",
+    "\\b(\\d*[.]?\\d+)\\b": "monokia_pro_purple",
+    "\\.[a-zA-Z0-9_]+": "monokia_pro_sky",
+    "\".*\"": "monokia_pro_orange",
+    "<[a-zA-Z0-9,<>]+>": "monokia_pro_pink",
+    "0x[0-9a-fA-F]+": "monokia_pro_purple",
+    "'[a-zA-Z]'": "monokia_pro_green",
+    "\\b(abstract|boolean|break|byte|case|catch|char|class|continue|default|do|double|else|enum|extends|final|finally|float|for|if|implements|import|instanceof|int|interface|long|native|new|null|package|private|protected|public|return|short|static|strictfp|super|switch|synchronized|this|throw|transient|try|void|volatile|while)\\b": "monokia_pro_pink",
+    "//[^\\n]*|/\\*(.|\\R)*?\\*/": "monokia_pro_grey"
+  },
+  "judge_id": 62,
+  "name": "Java"
+}

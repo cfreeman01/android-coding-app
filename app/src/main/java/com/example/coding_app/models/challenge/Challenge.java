@@ -27,18 +27,6 @@ public class Challenge {
     private String filename;
     private ChallengeData challengeData;
 
-    public boolean getCompleted(){
-        return challengeData.completed;
-    }
-
-    public String getDescriptionHTML() {
-        return challengeData.description_html;
-    }
-
-    public String getSolution(String lang){
-        return challengeData.solutions.get(lang);
-    }
-
     public Challenge(Context context, String filename){
         this.filename = filename;
         File localFile = new File(context.getFilesDir(), PATH_LOCAL + filename);
@@ -71,5 +59,17 @@ public class Challenge {
                 Log.e(TAG, "Local file " + filename + " could not be written.", e);
             }
         }
+    }
+
+    public boolean getCompleted(){
+        return challengeData.completed;
+    }
+
+    public String getDescriptionHTML() {
+        return challengeData.description_html;
+    }
+
+    public String getSolution(String lang){
+        return challengeData.solutions.get(lang);
     }
 }

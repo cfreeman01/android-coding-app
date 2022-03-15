@@ -18,11 +18,12 @@ import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.Judge.JudgeData;
 import com.example.coding_app.models.challenge.Challenge;
 import com.example.coding_app.models.challenge.ChallengeManager;
+import com.example.coding_app.models.language.Language;
 import com.example.coding_app.models.language.LanguageManager;
 
 public class CodingEnvironmentFragment extends Fragment {
 
-    private static String currentLanguage = LanguageManager.getLanguages()[0];
+    private static Language currentLanguage;
     private static Challenge currentChallenge;
 
     private static View rootView;
@@ -47,7 +48,6 @@ public class CodingEnvironmentFragment extends Fragment {
         codeView.setEnableLineNumber(true);
         codeView.setLineNumberTextColor(getResources().getColor(R.color.purple_200));
         codeView.setLineNumberTextSize(codeView.getTextSize());
-        LanguageManager.apply(currentLanguage, codeView);
 
         initLanguageSpinner();
         initSubmitButton();
@@ -66,7 +66,7 @@ public class CodingEnvironmentFragment extends Fragment {
     //initialize the spinner for selecting language
     private void initLanguageSpinner(){
         langSpinner = rootView.findViewById(R.id.lang_spinner);
-        String[] langChoices = LanguageManager.getLanguages();
+        String[] langChoices = LanguageManager.getLanguageNames();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, langChoices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         langSpinner.setAdapter(adapter);
@@ -74,9 +74,9 @@ public class CodingEnvironmentFragment extends Fragment {
         langSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                currentLanguage = LanguageManager.getLanguages()[position];
-                LanguageManager.apply(currentLanguage, codeView);
-                codeView.setText(LanguageManager.getDefaultCode(currentLanguage));
+                currentLanguage = LanguageManager.getLanguageByName(LanguageManager.getLanguageNames()[position]);
+                currentLanguage.apply(codeView);
+                codeView.setText(currentChallenge.getSolution(currentLanguage.getName()));
                 codeView.resetHighlighter();
                 return;
             }
@@ -99,7 +99,7 @@ public class CodingEnvironmentFragment extends Fragment {
                 String temp = codeView.getText().toString();
                 Judge.createSubmission(getCEFragment(),
                         codeView.getText().toString(),
-                        LanguageManager.getLanguageId(currentLanguage),
+                        currentLanguage.getID(),
                         "");
             }
         });
