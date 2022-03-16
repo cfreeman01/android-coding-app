@@ -32,16 +32,16 @@ public class CodingEnvironmentFragment extends Fragment {
     private static Button submitButton;
     private static WebView challengeDescription;
 
-    public CodingEnvironmentFragment() {
-        this.currentChallenge = ChallengeManager.getChallenge("Longest Common Prefix");
-    }
-
     public CodingEnvironmentFragment getCEFragment(){ return this; }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.coding_environment, null);
+
+        //initialize the fragment with the appropriate challenge
+        String currentChallengeName = getArguments().getString("Challenge");
+        this.currentChallenge = ChallengeManager.getChallenge(currentChallengeName);
 
         //initialize code view
         codeView = rootView.findViewById(R.id.code_view);
@@ -51,14 +51,7 @@ public class CodingEnvironmentFragment extends Fragment {
 
         initLanguageSpinner();
         initSubmitButton();
-
-        //challenge description webview
-        challengeDescription = rootView.findViewById(R.id.challenge_description);
-        if(currentChallenge != null) {
-            challengeDescription.loadDataWithBaseURL(null,
-                    currentChallenge.getDescriptionHTML(),
-                    "text/html", "UTF-8", null);
-        }
+        initChallengeDescription();
 
         return rootView;
     }
@@ -103,6 +96,16 @@ public class CodingEnvironmentFragment extends Fragment {
                         "");
             }
         });
+    }
+
+    //initialize the webview for the challenge description
+    private void initChallengeDescription(){
+        challengeDescription = rootView.findViewById(R.id.challenge_description);
+        if(currentChallenge != null) {
+            challengeDescription.loadDataWithBaseURL(null,
+                    currentChallenge.getDescriptionHTML(),
+                    "text/html", "UTF-8", null);
+        }
     }
 
     public void handleJudgeResponse(JudgeData response){

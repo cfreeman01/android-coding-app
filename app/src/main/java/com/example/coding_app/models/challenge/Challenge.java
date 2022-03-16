@@ -69,6 +69,14 @@ public class Challenge {
         return challengeData.description_html;
     }
 
+    public String getName(){
+        return challengeData.name;
+    }
+
+    public String getDifficultyLevel(){
+        return challengeData.difficulty_level;
+    }
+
     public String getSolution(String lang){
         return challengeData.solutions.get(lang);
     }
