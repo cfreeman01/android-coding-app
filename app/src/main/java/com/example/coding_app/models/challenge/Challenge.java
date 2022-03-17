@@ -17,6 +17,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.util.Map;
+import java.util.Set;
 
 public class Challenge {
 
@@ -33,32 +35,26 @@ public class Challenge {
 
         //if file already exists in local storage, read it
         if(localFile.exists()){
-            try {
-                challengeData = (ChallengeData)JSONFileHandler.getDataFromLocalFile(context, PATH_LOCAL + filename, ChallengeData.class);
-            }
-            catch(Exception e){
-                Log.e(TAG, "Local file " + filename + " could not be read.", e);
-            }
+            challengeData = (ChallengeData)JSONFileHandler.getDataFromLocalFile(context, PATH_LOCAL + filename, ChallengeData.class);
         }
 
         //otherwise, get the initial data from assets
         else{
-            try {
-                challengeData = (ChallengeData)JSONFileHandler.getDataFromAssets(context, PATH_ASSET + filename, ChallengeData.class);
-            }
-            catch(Exception e){
-                Log.e(TAG, "Asset file " + filename + " could not be read.", e);
-            }
+            challengeData = (ChallengeData)JSONFileHandler.getDataFromAssets(context, PATH_ASSET + filename, ChallengeData.class);
 
             try {
                 localFile.getParentFile().mkdirs();
                 localFile.createNewFile();
-                JSONFileHandler.writeDataToLocalFile(context, PATH_LOCAL + filename, challengeData);
+                writeChallengeToLocalFile(context);
             }
             catch(Exception e){
-                Log.e(TAG, "Local file " + filename + " could not be written.", e);
+                Log.e(TAG, "Local file " + filename + " could not be created.", e);
             }
         }
+    }
+
+    public void writeChallengeToLocalFile(Context context){
+        JSONFileHandler.writeDataToLocalFile(context, PATH_LOCAL + filename, challengeData);
     }
 
     public boolean getCompleted(){
@@ -79,5 +75,13 @@ public class Challenge {
 
     public String getSolution(String lang){
         return challengeData.solutions.get(lang);
+    }
+
+    public void setSolution(String langName, String newSolution){
+        challengeData.solutions.put(langName, newSolution);
+    }
+
+    public TestCase[] getTestCases(){
+        return challengeData.test_cases;
     }
 }

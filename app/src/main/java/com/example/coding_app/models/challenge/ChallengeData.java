@@ -8,4 +8,5 @@ public class ChallengeData {
     public String name;
     public String difficulty_level;
     public HashMap<String, String> solutions;
+    public TestCase[] test_cases;
 }

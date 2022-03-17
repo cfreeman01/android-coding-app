@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.amrdeveloper.codeview.CodeView;
@@ -18,8 +19,12 @@ import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.Judge.JudgeData;
 import com.example.coding_app.models.challenge.Challenge;
 import com.example.coding_app.models.challenge.ChallengeManager;
+import com.example.coding_app.models.challenge.TestCase;
 import com.example.coding_app.models.language.Language;
 import com.example.coding_app.models.language.LanguageManager;
+
+import java.util.Map;
+import java.util.Set;
 
 public class CodingEnvironmentFragment extends Fragment {
 
@@ -67,6 +72,13 @@ public class CodingEnvironmentFragment extends Fragment {
         langSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                //save the current solution for the currently selected language
+                String codeViewText = codeView.getText().toString();
+                if(currentChallenge != null && currentLanguage != null && !codeViewText.equals(""))
+                    currentChallenge.setSolution(currentLanguage.getName(), codeViewText);
+
+                //then select the new language and display the appropriate solution
                 currentLanguage = LanguageManager.getLanguageByName(LanguageManager.getLanguageNames()[position]);
                 currentLanguage.apply(codeView);
                 codeView.setText(currentChallenge.getSolution(currentLanguage.getName()));
@@ -87,13 +99,7 @@ public class CodingEnvironmentFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Judge.isProcessingRequest())
-                    return;
-                String temp = codeView.getText().toString();
-                Judge.createSubmission(getCEFragment(),
-                        codeView.getText().toString(),
-                        currentLanguage.getID(),
-                        "");
+                submitToJudge();
             }
         });
     }
@@ -108,8 +114,35 @@ public class CodingEnvironmentFragment extends Fragment {
         }
     }
 
-    public void handleJudgeResponse(JudgeData response){
-        codeView.append("\n" + response.stdout);
+    /* save challenge data when fragment is no longer active */
+    @Override
+    public void onStop(){
+        super.onStop();
+        if(currentChallenge != null) {
+            String test = codeView.getText().toString();
+            currentChallenge.setSolution(currentLanguage.getName(), codeView.getText().toString());
+            currentChallenge.writeChallengeToLocalFile(getContext());
+        }
+    }
+
+    private void submitToJudge(){
+        TestCase[] testCases = currentChallenge.getTestCases();
+        JudgeData[] submissions = new JudgeData[testCases.length];
+        String sourceCode = codeView.getText().toString();
+        int languageId = currentLanguage.getID();
+
+        for(int i=0; i<submissions.length; i++){
+            submissions[i] = new JudgeData();
+            submissions[i].language_id = languageId;
+            submissions[i].source_code = sourceCode;
+            submissions[i].stdin = testCases[i].in;
+            submissions[i].expected_output = testCases[i].out;
+        }
+
+        Judge.createSubmissionBatch(this, submissions);
+    }
+
+    public void handleJudgeResponse(JudgeData[] response){
+        response = null;
     }
 }
-

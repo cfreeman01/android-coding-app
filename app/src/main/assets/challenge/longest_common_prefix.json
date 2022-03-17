@@ -6,6 +6,16 @@
     "C": "#include <stdio.h>\n\nint main(void){\n  printf(\"Hello world!\");\n}",
     "Go": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello world!\")\n}"
   },
+  "test_cases": [
+    {
+      "in": "flower flow flight",
+      "out": "fl"
+    },
+    {
+      "in": "dog racecar car",
+      "out": ""
+    }
+  ],
   "description_html": "<body style=\"background-color:#575757;\n             color:white;\n             font-family:'Source Sans Pro', sans-serif;\">\n\n    <h1>\n        Longest common prefix\n    </h1>\n\n    <hr width=\"40%\" align=\"left\" />\n\n    <span>\n        Write a function to find the <span style=\"color: #ff6188\">longest common prefix string</span> amongst an array of strings.\n\n        If there is no common prefix, return an empty string\n    </span> <span style=\"color: #ffd866\">\"\"</span>.\n\n    <h2 style=\"font-size: 20px\">Example 1:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\"><span style=\"font-weight: bold;\">Input:</span> strs = [\"flower\",\"flow\",\"flight\"]\n<span style=\"font-weight: bold;\">Output:</span> \"fl\"</pre>\n\n    <h2 style=\"font-size: 20px\">Example 2:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\"><span style=\"font-weight: bold;\">Input:</span> strs = [\"dog\",\"racecar\",\"car\"]\n<span style=\"font-weight: bold;\">Output:</span> \"\"</pre>\n\n</body>",
   "completed": false,
   "name": "Longest Common Prefix",

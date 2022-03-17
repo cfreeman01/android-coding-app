@@ -6,6 +6,12 @@
     "C": "#include <stdio.h>\n\nint main(void){\n  printf(\"Hello world!\");\n}",
     "Go": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello world!\")\n}"
   },
+  "test_cases": [
+    {
+      "in": "",
+      "out": "Hello world!"
+    }
+  ],
   "description_html": "<body style=\"background-color:#575757;\r\n             color:white;\r\n             font-family:'Source Sans Pro', sans-serif;\">\r\n\r\n    <h1>\r\n        Hello World\r\n    </h1>\r\n\r\n    <hr width=\"40%\" align=\"left\" />\r\n\r\n    <span>Write a simple program to print </span> <span style=\"color: #ffd866\">\"Hello world!\"</span>\r\n\r\n    <h2>Example output:</h2>\r\n    <code style=\"background-color: #3d3d3d;\r\n                 padding: 10px\">\r\n        Hello world!\r\n    </code>\r\n\r\n</body>",
   "completed": false,
   "name": "Hello World!",
