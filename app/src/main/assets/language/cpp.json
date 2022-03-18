@@ -1,16 +1,15 @@
 {
   "highlighter": {
+    "#.*": "monokia_pro_sky",
     "[,:;[->]{}()]": "monokia_pro_white",
     ":|==|>|<|!=|>=|<=|->|=|>|<|%|-|-=|%=|\\+|\\-|\\-=|\\+=|\\^|\\&|\\|::|\\?|\\*": "monokia_pro_pink",
     "\\b(\\d*[.]?\\d+)\\b": "monokia_pro_purple",
     "\\.[a-zA-Z0-9_]+": "monokia_pro_sky",
     "\".*\"": "monokia_pro_orange",
-    "<[a-zA-Z0-9,<>]+>": "monokia_pro_pink",
     "0x[0-9a-fA-F]+": "monokia_pro_purple",
     "'[a-zA-Z]'": "monokia_pro_green",
     "\\b(break|case|char|continue|default|do|double|else|enum|float|for|if|int|register|signed|unsigned|const|long|goto|sizeof|union|struct|auto|extern|typedef|return|short|static|switch|void|volatile|while|class|public|private|protected|bool|try|catch|throw|new|delete|namespace|friend|nullptr|virtual|template|using)\\b": "monokia_pro_pink",
-    "//[^\\n]*|/\\*(.|\\R)*?\\*/": "monokia_pro_grey",
-    "#.*": "monokia_pro_sky"
+    "//[^\\n]*|/\\*(.|\\R)*?\\*/": "monokia_pro_grey"
   },
   "judge_id": 53,
   "name": "C++"

@@ -1,5 +1,8 @@
 package com.example.coding_app.models.Judge;
 
+/**
+ * Parameters sent and received by judge
+ */
 public class JudgeData {
     public String source_code = null;
     public int language_id = 0;

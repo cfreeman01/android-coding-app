@@ -17,6 +17,7 @@ import com.amrdeveloper.codeview.CodeView;
 import com.example.coding_app.R;
 import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.Judge.JudgeData;
+import com.example.coding_app.models.Judge.JudgeResponseHandler;
 import com.example.coding_app.models.challenge.Challenge;
 import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.challenge.TestCase;
@@ -26,7 +27,7 @@ import com.example.coding_app.models.language.LanguageManager;
 import java.util.Map;
 import java.util.Set;
 
-public class CodingEnvironmentFragment extends Fragment {
+public class CodingEnvironmentFragment extends Fragment implements JudgeResponseHandler {
 
     private static Language currentLanguage;
     private static Challenge currentChallenge;
@@ -139,7 +140,7 @@ public class CodingEnvironmentFragment extends Fragment {
             submissions[i].expected_output = testCases[i].out;
         }
 
-        Judge.createSubmissionBatch(this, submissions);
+        Judge.sendSubmissionBatch(getContext(), submissions, this);
     }
 
     public void handleJudgeResponse(JudgeData[] response){

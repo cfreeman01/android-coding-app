@@ -24,24 +24,21 @@ public class Judge {
     private static final String AUTH_TOKEN = "5b0ed02bb9mshad23e19878c65f8p1c7dd5jsn145419a8f43f";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
-    private static JudgeData[] lastResponse = null;
 
-    //add necessary headers to async http client
+    /**
+     Add necessary headers to the AsyncHttpClient
+     */
     public static void init(Context context){
-        //add headers
         client.addHeader("content-type", "application/json");
         client.addHeader("x-rapidapi-host", HOST);
         client.addHeader("x-rapidapi-key", AUTH_TOKEN);
     }
 
-    public static boolean isProcessingRequest(){
-        return (lastResponse != null);
-    }
-
-    //Send a single code submission to Judge
-    public static void createSubmissionBatch(CodingEnvironmentFragment cef, JudgeData[] submissions){
-        if(isProcessingRequest()) return;
-
+    /**
+     Send a batch of code submissions to Judge. Once all of the submissions are processed,
+     the results are passed back to the JudgeResponseHandler
+     */
+    public static void sendSubmissionBatch(Context context, JudgeData[] submissions, JudgeResponseHandler jrh){
         //create the JSON string to send
         Gson gson = new Gson();
         JudgeBatch batch = new JudgeBatch();
@@ -56,7 +53,7 @@ public class Judge {
             return;
         }
 
-        client.post(cef.getContext(),
+        client.post(context,
                 BASE_URL + "/submissions/batch/?base64_encoded=false&wait=false",
                 entity,
                 "application/json",
@@ -65,8 +62,8 @@ public class Judge {
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                         String responseString = new String(responseBody);
                         Gson gson = new Gson();
-                        lastResponse = gson.fromJson(responseString, JudgeData[].class);
-                        getSubmissionBatch(cef);
+                        JudgeData[] tokens = gson.fromJson(responseString, JudgeData[].class);
+                        getSubmissionBatch(context, tokens, jrh);
                     }
 
                     @Override
@@ -76,17 +73,20 @@ public class Judge {
                 });
     }
 
-    public static void getSubmissionBatch(CodingEnvironmentFragment cef){
-        if(!isProcessingRequest()) return;
+    /**
+     Called by sendSubmissionBatch. Repeatedly requests the results of the submission batch, and once
+     they are completed the results are passed back to the JudgeResponseHandler
+     */
+    private static void getSubmissionBatch(Context context, JudgeData[] tokens, JudgeResponseHandler jrh){
 
         //construct tokens string
-        String tokens = "";
-        for(int i=0; i<lastResponse.length-1; i++)
-            tokens += lastResponse[i].token + ",";
-        tokens += lastResponse[lastResponse.length-1].token;
+        String token_string = "";
+        for(int i=0; i<tokens.length-1; i++)
+            token_string += tokens[i].token + ",";
+        token_string += tokens[tokens.length-1].token;
 
-        client.get(cef.getContext(),
-                BASE_URL + "/submissions/batch?tokens=" + tokens + "&base64_encoded=false&fields=*",
+        client.get(context,
+                BASE_URL + "/submissions/batch?tokens=" + token_string + "&base64_encoded=false&fields=*",
                 null,
                 "application/json",
                 new AsyncHttpResponseHandler() {
@@ -106,15 +106,14 @@ public class Judge {
                         }
 
                         if(allFinished) {             //if all submissions finished, process the results
-                            lastResponse = null;
-                            cef.handleJudgeResponse(results);
+                            jrh.handleJudgeResponse(results);
                         }
                         else{                         //otherwise, try again after a delay
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable(){
                                 @Override
                                 public void run() {
-                                    getSubmissionBatch(cef);
+                                    getSubmissionBatch(context, tokens, jrh);
                                 }
                             }, 100);
                         }
