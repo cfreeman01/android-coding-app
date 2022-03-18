@@ -20,6 +20,10 @@ import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Represents a single coding challenge. Data for the challenge (description,
+ * test cases, etc.) is contained in 'challengeData' member
+ */
 public class Challenge {
 
     private static final String TAG = "Challenge";

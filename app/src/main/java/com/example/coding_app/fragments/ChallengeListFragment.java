@@ -16,12 +16,13 @@ import com.example.coding_app.models.challenge.Challenge;
 import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.views.ChallengeListItem;
 
+/**
+ * Displays the list of available coding challenges
+ */
 public class ChallengeListFragment extends Fragment {
 
-    private static View rootView;
-    private static LinearLayout list_container;
-
-    public ChallengeListFragment() { }
+    private View rootView;
+    private LinearLayout list_container;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
@@ -32,7 +33,9 @@ public class ChallengeListFragment extends Fragment {
         return rootView;
     }
 
-    //fill the list with challenge list items
+    /**
+     * Fill the layout with selectable items for the challenges
+     */
     private void fillList(){
         boolean alternate_background = false;
 
@@ -62,7 +65,7 @@ public class ChallengeListFragment extends Fragment {
                 }
             });
 
-            //add to list
+            //add new ChallengeListItem to the layout
             list_container.addView(cli);
         }
     }

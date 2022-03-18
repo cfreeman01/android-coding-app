@@ -20,10 +20,10 @@ import com.google.android.material.navigation.NavigationBarView;
 import java.io.File;
 import java.io.FileOutputStream;
 
+/**
+ * Starting activity
+ */
 public class MainActivity extends AppCompatActivity {
-
-    private BottomNavigationView mainBottomNavView;
-    private FragmentContainerView mainFragContainerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
         //hide top bar
         getSupportActionBar().hide();
 
-        mainFragContainerView = findViewById(R.id.main_fragment_container_view);
         createMainBottomNavView();
     }
 
-    //hook up the bottom navigation view
+    /**
+     * Hook up the main bottom navigation view
+     */
     private void createMainBottomNavView(){
-        mainBottomNavView = findViewById(R.id.main_bottom_nav_view);
+        BottomNavigationView mainBottomNavView = findViewById(R.id.main_bottom_nav_view);
         mainBottomNavView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Swap out the main fragment being displayed
+     */
     public void replaceMainFragment(Class newFragmentType, Bundle args){
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_fragment_container_view, newFragmentType, args)

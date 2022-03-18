@@ -11,6 +11,9 @@ import androidx.annotation.Nullable;
 import com.example.coding_app.R;
 import com.example.coding_app.models.challenge.Challenge;
 
+/**
+ * Selectable list item for a coding challenge.
+ */
 public class ChallengeListItem extends FrameLayout {
 
     private Challenge challenge;
@@ -27,6 +30,9 @@ public class ChallengeListItem extends FrameLayout {
         difficultyLevel = rootView.findViewById(R.id.difficulty_level);
     }
 
+    /**
+     * Initializes the view by passing in the appropriate challenge data
+     */
     public void setChallenge(Challenge challenge){
         this.challenge = challenge;
         challengeTitle.setText(challenge.getName());

@@ -15,6 +15,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Static class that handles reading and writing JSON files in local
+ * storage and Assets
+ */
 public class JSONFileHandler {
 
     public static final String TAG = "JSONFileHandler";

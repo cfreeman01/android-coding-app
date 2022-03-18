@@ -13,6 +13,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/**
+ * Represents a single programming language. Data for the language
+ * (name, syntax patterns, etc.) is contained in 'languageData' member
+ */
 public class Language {
 
     private static final String TAG = "Langage";
@@ -44,6 +48,10 @@ public class Language {
         return languageData.name;
     }
 
+    /**
+     * Initialize the patters map by compiling Pattern objects and
+     * fetching color values from resource manager
+     */
     public void fillPatternsMap(Context context){
         for(Map.Entry<String, String> entry: languageData.highlighter.entrySet()){
             int colorResource = context.getResources().getIdentifier(entry.getValue(), "color", context.getPackageName());
@@ -55,6 +63,9 @@ public class Language {
         }
     }
 
+    /**
+     * Set the appropriate syntax highlighting on codeView
+     */
     public void apply(CodeView codeView){
         HashSet<Character> indentationStarts = new HashSet<Character>();
         indentationStarts.add('{');

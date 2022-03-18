@@ -2,6 +2,7 @@ package com.example.coding_app.models.Judge;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 
 import com.example.coding_app.fragments.CodingEnvironmentFragment;
@@ -68,7 +69,8 @@ public class Judge {
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e(TAG, "Judge submission failed.");
+                        String responseString = new String(responseBody);
+                        Log.e(TAG, "Judge POST failed: " + responseString);
                     }
                 });
     }
@@ -86,7 +88,7 @@ public class Judge {
         token_string += tokens[tokens.length-1].token;
 
         client.get(context,
-                BASE_URL + "/submissions/batch?tokens=" + token_string + "&base64_encoded=false&fields=*",
+                BASE_URL + "/submissions/batch?tokens=" + token_string + "&base64_encoded=true&fields=*",
                 null,
                 "application/json",
                 new AsyncHttpResponseHandler() {
@@ -97,6 +99,7 @@ public class Judge {
                         JudgeBatch response = gson.fromJson(responseString, JudgeBatch.class);
                         JudgeData[] results = response.submissions;
 
+                        //check if all submissions are finished executing
                         boolean allFinished = true;
                         for(int i=0; i<results.length; i++){
                             if(results[i].status_id < 3){
@@ -106,6 +109,22 @@ public class Judge {
                         }
 
                         if(allFinished) {             //if all submissions finished, process the results
+
+                            //convert from base64
+                            for(JudgeData result: results) {
+                                if(result.stdin != null)
+                                    result.stdin = new String(Base64.decode(result.stdin, Base64.NO_WRAP));
+                                if(result.stdout != null)
+                                    result.stdout = new String(Base64.decode(result.stdout, Base64.NO_WRAP));
+                                if(result.compile_output != null)
+                                    result.compile_output = new String(Base64.decode(result.compile_output, Base64.NO_WRAP));
+                                if(result.stderr != null)
+                                    result.stderr = new String(Base64.decode(result.stderr, Base64.NO_WRAP));
+                                if(result.expected_output != null)
+                                    result.expected_output = new String(Base64.decode(result.expected_output, Base64.NO_WRAP));
+                            }
+
+                            //return results to response handler
                             jrh.handleJudgeResponse(results);
                         }
                         else{                         //otherwise, try again after a delay
@@ -116,12 +135,14 @@ public class Judge {
                                     getSubmissionBatch(context, tokens, jrh);
                                 }
                             }, 100);
+                            getSubmissionBatch(context, tokens, jrh);
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                        Log.e(TAG, "Judge get failed.");
+                        String responseString = new String(responseBody);
+                        Log.e(TAG, "Judge GET failed: " + responseString);
                     }
                 });
     }

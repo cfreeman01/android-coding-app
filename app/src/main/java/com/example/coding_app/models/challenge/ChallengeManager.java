@@ -7,6 +7,9 @@ import com.example.coding_app.models.language.Language;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Static class for managing all of the coding challenges
+ */
 public class ChallengeManager {
     private static Map<String, Challenge> challenges = new HashMap<String, Challenge>();
 

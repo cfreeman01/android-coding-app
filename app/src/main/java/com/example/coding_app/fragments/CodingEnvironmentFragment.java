@@ -8,6 +8,7 @@ import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -23,20 +24,23 @@ import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.challenge.TestCase;
 import com.example.coding_app.models.language.Language;
 import com.example.coding_app.models.language.LanguageManager;
+import com.example.coding_app.views.ChallengeListItem;
+import com.example.coding_app.views.TestCaseResult;
 
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The main environment for solving coding challenges. Provides challenge description,
+ * code editor, submit button, and results of code execution
+ */
 public class CodingEnvironmentFragment extends Fragment implements JudgeResponseHandler {
 
-    private static Language currentLanguage;
-    private static Challenge currentChallenge;
+    private Language currentLanguage;
+    private Challenge currentChallenge;
 
-    private static View rootView;
-    private static CodeView codeView;
-    private static Spinner langSpinner;
-    private static Button submitButton;
-    private static WebView challengeDescription;
+    private View rootView;
+    private CodeView codeView;
 
     public CodingEnvironmentFragment getCEFragment(){ return this; }
 
@@ -62,9 +66,11 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         return rootView;
     }
 
-    //initialize the spinner for selecting language
+    /**
+     * Initialize the spinner for selecting language
+     */
     private void initLanguageSpinner(){
-        langSpinner = rootView.findViewById(R.id.lang_spinner);
+        Spinner langSpinner = rootView.findViewById(R.id.lang_spinner);
         String[] langChoices = LanguageManager.getLanguageNames();
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, langChoices);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -94,9 +100,11 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         });
     }
 
-    //initialize the button used to submit code
+    /**
+     * Initialize the button used to submit code
+     */
     private void initSubmitButton(){
-        submitButton = rootView.findViewById(R.id.submit_button);
+        Button submitButton = rootView.findViewById(R.id.submit_button);
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,9 +113,11 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         });
     }
 
-    //initialize the webview for the challenge description
+    /**
+     * Initialize the WebView that displays the challenge description
+     */
     private void initChallengeDescription(){
-        challengeDescription = rootView.findViewById(R.id.challenge_description);
+        WebView challengeDescription = rootView.findViewById(R.id.challenge_description);
         if(currentChallenge != null) {
             challengeDescription.loadDataWithBaseURL(null,
                     currentChallenge.getDescriptionHTML(),
@@ -115,7 +125,9 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         }
     }
 
-    /* save challenge data when fragment is no longer active */
+    /**
+     * Save challenge data when fragment is no longer active
+     */
     @Override
     public void onStop(){
         super.onStop();
@@ -126,6 +138,10 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         }
     }
 
+    /**
+     * Called when user presses 'submit' button; sends code submission to the
+     * Judge class
+     */
     private void submitToJudge(){
         TestCase[] testCases = currentChallenge.getTestCases();
         JudgeData[] submissions = new JudgeData[testCases.length];
@@ -143,7 +159,22 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         Judge.sendSubmissionBatch(getContext(), submissions, this);
     }
 
+    /**
+     * Callback function; called by the Judge class after a code submission
+     * is finished executing
+     */
     public void handleJudgeResponse(JudgeData[] response){
-        response = null;
+        if(response == null) return;
+        LinearLayout resultsContainer = rootView.findViewById(R.id.results_container);
+        resultsContainer.removeAllViews();
+
+        for(int i=0; i<response.length; i++){
+            TestCaseResult tcr = new TestCaseResult(rootView.getContext(), null);
+            tcr.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            tcr.setResult(response[i], i + 1);
+            resultsContainer.addView(tcr);
+        }
     }
 }

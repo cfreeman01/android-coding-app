@@ -8,6 +8,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Static class for managing all of the available
+ * programming languages
+ */
 public class LanguageManager {
     private static Map<String, Language> languages = new HashMap<String, Language>();
 
