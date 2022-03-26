@@ -82,6 +82,7 @@ public class Judge {
     private static void getSubmissionBatch(Context context, JudgeData[] tokens, JudgeResponseHandler jrh){
 
         //construct tokens string
+        if(tokens == null) return;
         String token_string = "";
         for(int i=0; i<tokens.length-1; i++)
             token_string += tokens[i].token + ",";
@@ -98,6 +99,7 @@ public class Judge {
                         Gson gson = new Gson();
                         JudgeBatch response = gson.fromJson(responseString, JudgeBatch.class);
                         JudgeData[] results = response.submissions;
+                        if(results == null) return;
 
                         //check if all submissions are finished executing
                         boolean allFinished = true;

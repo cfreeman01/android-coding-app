@@ -1,7 +1,9 @@
 package com.example.coding_app.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -53,17 +55,35 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         String currentChallengeName = getArguments().getString("Challenge");
         this.currentChallenge = ChallengeManager.getChallenge(currentChallengeName);
 
-        //initialize code view
-        codeView = rootView.findViewById(R.id.code_view);
-        codeView.setEnableLineNumber(true);
-        codeView.setLineNumberTextColor(getResources().getColor(R.color.purple_200));
-        codeView.setLineNumberTextSize(codeView.getTextSize());
-
+        initCodeView();
         initLanguageSpinner();
         initSubmitButton();
         initChallengeDescription();
 
         return rootView;
+    }
+
+    /**
+     * Initialize the code editor
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private void initCodeView(){
+        codeView = rootView.findViewById(R.id.code_view);
+        codeView.setEnableLineNumber(true);
+        codeView.setLineNumberTextColor(getResources().getColor(R.color.purple_200));
+        codeView.setLineNumberTextSize(codeView.getTextSize());
+        codeView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                view.getParent().requestDisallowInterceptTouchEvent(true);
+                switch (event.getAction()&MotionEvent.ACTION_MASK){
+                    case MotionEvent.ACTION_UP:
+                        view.getParent().requestDisallowInterceptTouchEvent(false);
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     /**

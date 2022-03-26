@@ -59,7 +59,8 @@
         android:textSize = "15sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lang_spinner_container" />
+        app:layout_constraintTop_toBottomOf="@id/lang_spinner_container"
+        android:overScrollMode="always" />
 
     <Button
         android:id="@+id/submit_button"

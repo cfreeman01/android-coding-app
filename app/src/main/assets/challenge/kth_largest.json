@@ -1,0 +1,23 @@
+{
+  "solutions": {
+    "Python 3": "print(\"Hello world!\")",
+    "Java": "class Main {\n  \n  public static void main(String[] args){\n    System.out.println(\"Hello world!\");\n  }\n\n}",
+    "C++": "#include <iostream>\n\nint main(void){\n  std::cout << \"Hello world!\";\n}",
+    "C": "#include <stdio.h>\n\nint main(void){\n  printf(\"Hello world!\");\n}",
+    "Go": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello world!\")\n}"
+  },
+  "test_cases": [
+    {
+      "in": "5 3 42 -11 80 109 0",
+      "out": "42"
+    },
+    {
+      "in": "5 6 0 1 2 3 4",
+      "out": "Invalid"
+    }
+  ],
+  "description_html": "<body style=\"background-color:#575757;\n             color:white;\n             font-family:'Source Sans Pro', sans-serif;\">\n\n    <h1>\n        Kth Largest Element\n    </h1>\n\n    <hr width=\"40%\" align=\"left\" />\n\n    <span>\n        Write a function to print the <span style=\"color: #ff6188\">kth largest element</span> in an array of <span style=\"color: #ff6188\">n</span> integers.\n        If input is invalid, print <span style=\"color: #ffd866\">\"Invalid\"</span>\n    </span>\n\n    <h2 style=\"font-size: 20px\">Input Format:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\">n k array[0] array[1] ... array[n-1]</pre>\n\n    <h2 style=\"font-size: 20px\">Example 1:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\"><span style=\"font-weight: bold;\">Input:</span> 5 3 42 -11 80 109 0\n<span style=\"font-weight: bold;\">Output:</span> 42</pre>\n\n    <h2 style=\"font-size: 20px\">Example 2:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\"><span style=\"font-weight: bold;\">Input:</span> 5 6 0 1 2 3 4 \n<span style=\"font-weight: bold;\">Output:</span> Invalid</pre>\n\n</body>",
+  "completed": false,
+  "name": "Kth Largest Element",
+  "difficulty_level": "Easy"
+}

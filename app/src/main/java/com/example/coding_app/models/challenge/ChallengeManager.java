@@ -17,6 +17,7 @@ public class ChallengeManager {
     public static void init(Context context){
         challenges.put("Hello World!", new Challenge(context, "hello_world.json"));
         challenges.put("Longest Common Prefix", new Challenge(context, "longest_common_prefix.json"));
+        challenges.put("Kth Largest Element", new Challenge(context, "kth_largest.json"));
     }
 
     public static Challenge getChallenge(String challengeName){
