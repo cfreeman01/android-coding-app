@@ -18,6 +18,8 @@ public class ChallengeManager {
         challenges.put("Hello World!", new Challenge(context, "hello_world.json"));
         challenges.put("Longest Common Prefix", new Challenge(context, "longest_common_prefix.json"));
         challenges.put("Kth Largest Element", new Challenge(context, "kth_largest.json"));
+        challenges.put("Rotate Array", new Challenge(context, "rotate_array.json"));
+        challenges.put("Next Permutation", new Challenge(context, "next_permutation.json"));
     }
 
     public static Challenge getChallenge(String challengeName){

@@ -1,0 +1,23 @@
+{
+  "solutions": {
+    "Python 3": "print(\"Hello world!\")",
+    "Java": "class Main {\n  \n  public static void main(String[] args){\n    System.out.println(\"Hello world!\");\n  }\n\n}",
+    "C++": "#include <iostream>\n\nint main(void){\n  std::cout << \"Hello world!\";\n}",
+    "C": "#include <stdio.h>\n\nint main(void){\n  printf(\"Hello world!\");\n}",
+    "Go": "package main\n\nimport \"fmt\"\n\nfunc main() {\n    fmt.Println(\"Hello world!\")\n}"
+  },
+  "test_cases": [
+    {
+      "in": "4 1 1 5 2",
+      "out": "1 2 1 5"
+    },
+    {
+      "in": "3 3 2 1",
+      "out": "1 2 3"
+    }
+  ],
+  "description_html": "<body style=\"background-color:#575757;\n             color:white;\n             font-family:'Source Sans Pro', sans-serif;\">\n\n    <h1>\n        Next Permutation\n    </h1>\n\n    <hr width=\"40%\" align=\"left\" />\n\n    <span>\n        Write a function to print the <span style=\"color: #ff6188\">next greatest permutation</span> of an array of <span style=\"color: #ff6188\">n</span> integers.\n        If no such arrangement exists, print the array <span style=\"color: #ff6188\">sorted in ascending order</span>.\n    </span>\n\n    <h2 style=\"font-size: 20px\">Input Format:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\">n array[0] array[1] ... array[n-1]</pre>\n\n    <h2 style=\"font-size: 20px\">Example 1:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\"><span style=\"font-weight: bold;\">Input:</span> 4 1 1 5 2\n<span style=\"font-weight: bold;\">Output:</span> 1 2 1 5</pre>\n\n    <h2 style=\"font-size: 20px\">Example 2:</h2>\n    <pre style=\"background-color: #3d3d3d; display:inline-block; padding: 10px;\"><span style=\"font-weight: bold;\">Input:</span> 3 3 2 1\n<span style=\"font-weight: bold;\">Output:</span> 1 2 3</pre>\n\n</body>",
+  "completed": false,
+  "name": "Next Permutation",
+  "difficulty_level": "Medium"
+}
