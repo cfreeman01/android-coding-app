@@ -188,6 +188,9 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         LinearLayout resultsContainer = rootView.findViewById(R.id.results_container);
         resultsContainer.removeAllViews();
 
+        boolean allTestCasesPassed = true;
+
+        //initialize the views for the test case results
         for(int i=0; i<response.length; i++){
             TestCaseResult tcr = new TestCaseResult(rootView.getContext(), null);
             tcr.setLayoutParams(new LinearLayout.LayoutParams(
@@ -195,6 +198,14 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
                     LinearLayout.LayoutParams.WRAP_CONTENT));
             tcr.setResult(response[i], i + 1);
             resultsContainer.addView(tcr);
+
+            if(response[i].status_id != 3){
+                allTestCasesPassed = false;
+            }
         }
+
+        //if all test cases passed, mark the challenge as completed
+        if(allTestCasesPassed)
+            currentChallenge.setCompleted(true);
     }
 }

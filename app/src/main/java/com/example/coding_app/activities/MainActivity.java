@@ -14,6 +14,7 @@ import com.example.coding_app.fragments.ProfileFragment;
 import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.language.LanguageManager;
+import com.example.coding_app.models.productivity.AppUsageManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         Judge.init(getApplicationContext());
         LanguageManager.init(getApplicationContext());
         ChallengeManager.init(getApplicationContext());
+        AppUsageManager.init(getApplicationContext());
 
         //hide top bar
         getSupportActionBar().hide();

@@ -61,7 +61,7 @@ public class Challenge {
         JSONFileHandler.writeDataToLocalFile(context, PATH_LOCAL + filename, challengeData);
     }
 
-    public boolean getCompleted(){
+    public boolean isCompleted(){
         return challengeData.completed;
     }
 
@@ -83,6 +83,10 @@ public class Challenge {
 
     public void setSolution(String langName, String newSolution){
         challengeData.solutions.put(langName, newSolution);
+    }
+
+    public void setCompleted(boolean completed){
+        challengeData.completed = completed;
     }
 
     public TestCase[] getTestCases(){

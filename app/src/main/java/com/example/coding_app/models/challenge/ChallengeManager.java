@@ -22,13 +22,52 @@ public class ChallengeManager {
         challenges.put("Next Permutation", new Challenge(context, "next_permutation.json"));
     }
 
+    /**
+     * Get a challenge by name
+     */
     public static Challenge getChallenge(String challengeName){
         if(!challenges.containsKey(challengeName)) return null;
         return challenges.get(challengeName);
     }
 
+    /**
+     * Return an array of all challenges
+     */
     public static Challenge[] getChallenges(){
         Challenge[] chs = challenges.values().toArray(new Challenge[0]);
         return chs;
+    }
+
+    /**
+     * Get number of challenges completed
+     */
+    public static int getNumCompleted(){
+        Challenge[] challenges = getChallenges();
+        int numCompleted = 0;
+
+        for(Challenge ch: challenges){
+            if(ch.isCompleted()){
+                numCompleted++;
+            }
+        }
+
+        return numCompleted;
+    }
+
+    /**
+     * Get the suggested next challenge for the user to complete
+     */
+    public static Challenge getSuggestedChallenge(){
+        Challenge[] challenges = getChallenges();
+        Challenge suggested = challenges[challenges.length - 1];
+
+        for(Challenge ch: challenges){
+            if(!ch.isCompleted()){
+                suggested = ch;
+                break;
+            }
+        }
+
+        return suggested;
     }
 }
