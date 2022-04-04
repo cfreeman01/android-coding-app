@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -207,5 +208,14 @@ public class CodingEnvironmentFragment extends Fragment implements JudgeResponse
         //if all test cases passed, mark the challenge as completed
         if(allTestCasesPassed)
             currentChallenge.setCompleted(true);
+
+        //scroll to bottom to show the results
+        ScrollView scrollView = rootView.findViewById(R.id.scroll_view);
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
     }
 }

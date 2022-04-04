@@ -6,15 +6,17 @@ import android.graphics.drawable.Drawable;
 /**
  * Holds information about an application
  */
-public class AppInfo {
+public class AppData {
     private ApplicationInfo info;
     private String name;
     private Drawable icon;
+    private String packageName;
 
-    public AppInfo(ApplicationInfo info, String name, Drawable icon){
+    public AppData(ApplicationInfo info, String name, Drawable icon, String packageName){
         this.info = info;
         this.name = name;
         this.icon = icon;
+        this.packageName = packageName;
     }
 
     public ApplicationInfo getInfo(){
@@ -27,5 +29,9 @@ public class AppInfo {
 
     public Drawable getIcon(){
         return icon;
+    }
+
+    public String getPackageName(){
+        return packageName;
     }
 }

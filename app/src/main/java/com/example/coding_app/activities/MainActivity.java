@@ -2,24 +2,21 @@ package com.example.coding_app.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentContainerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.coding_app.R;
 import com.example.coding_app.fragments.ChallengeListFragment;
-import com.example.coding_app.fragments.CodingEnvironmentFragment;
 import com.example.coding_app.fragments.ProfileFragment;
 import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.language.LanguageManager;
+import com.example.coding_app.models.productivity.AppManager;
 import com.example.coding_app.models.productivity.AppUsageManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-
-import java.io.File;
-import java.io.FileOutputStream;
 
 /**
  * Starting activity
@@ -32,10 +29,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //initialize static objects
-        Judge.init(getApplicationContext());
-        LanguageManager.init(getApplicationContext());
-        ChallengeManager.init(getApplicationContext());
-        AppUsageManager.init(getApplicationContext());
+        Context context = getApplicationContext();
+        Judge.init(context);
+        LanguageManager.init(context);
+        ChallengeManager.init(context);
+        AppManager.init(context);
 
         //hide top bar
         getSupportActionBar().hide();

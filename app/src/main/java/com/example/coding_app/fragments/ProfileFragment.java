@@ -4,17 +4,14 @@ import android.app.AppOpsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -22,7 +19,8 @@ import com.example.coding_app.R;
 import com.example.coding_app.activities.MainActivity;
 import com.example.coding_app.models.challenge.Challenge;
 import com.example.coding_app.models.challenge.ChallengeManager;
-import com.example.coding_app.models.productivity.AppInfo;
+import com.example.coding_app.models.productivity.AppData;
+import com.example.coding_app.models.productivity.AppManager;
 import com.example.coding_app.models.productivity.AppUsageManager;
 import com.example.coding_app.views.AppListItem;
 import com.example.coding_app.views.ChallengeListItem;
@@ -43,26 +41,32 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.profile_layout, null);
 
-        if(!checkPermissions()) return rootView;
-
-        initChallengesCompletedView();
-        initSuggestedChallenge();
-        initAppsTracker();
+        if(checkPermissions()) {
+            AppUsageManager.init(getContext());
+            rootView = inflater.inflate(R.layout.profile_layout, null);
+            initChallengesCompletedView();
+            initSuggestedChallenge();
+            initAppsTracker();
+        }
+        else{
+            rootView = inflater.inflate(R.layout.no_permission_layout, null);
+            TextView message = rootView.findViewById(R.id.no_permission_message);
+            message.setText("App usage permission not granted.\n\n" +
+                    "Please grant permission to view app usage data in order to use productivity features.\n\n" +
+                    "(Settings > Apps and Notifications > Special app access > Usage access)");
+        }
 
         return rootView;
     }
 
     /**
-     * Check if usage access is granted. If not, display a message saying so.
-     * If granted, display the rest of the layout
+     * Check if permission to view app usage is granted.
      */
     private boolean checkPermissions(){
         AppOpsManager appOps = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
         int mode = appOps.checkOpNoThrow("android:get_usage_stats", android.os.Process.myUid(), getContext().getPackageName());
-        boolean granted = mode == AppOpsManager.MODE_ALLOWED;
-        return granted;
+        return mode == AppOpsManager.MODE_ALLOWED;
     }
 
     /**
@@ -102,10 +106,30 @@ public class ProfileFragment extends Fragment {
     private void initAppsTracker(){
         LinearLayout appsList = rootView.findViewById(R.id.apps_list);
         Button addAppButton = rootView.findViewById(R.id.add_app_button);
+        ImageView infoButton = rootView.findViewById(R.id.info_button);
+        TextView infoBox = rootView.findViewById(R.id.info_box);
 
         //add already tracked apps to list
-        for(AppInfo ai: AppUsageManager.getApps())
+        for(AppData ai: AppManager.getApps())
             addAppToList(ai);
+
+        //initialize info button and text box
+        infoButton.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_baseline_info_24));
+        infoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(infoBox.getVisibility() == View.INVISIBLE)
+                    infoBox.setVisibility(View.VISIBLE);
+                else
+                    infoBox.setVisibility(View.INVISIBLE);
+            }
+        });
+        infoBox.setVisibility(View.INVISIBLE);
+        infoBox.setText(
+                "Tracking an app can help you stay more productive by: \n\n" +
+                "1) Showing you the amount of time you used the app in the last week\n\n" +
+                "2) Sending you notifications with suggestions for coding challenges while using the app"
+        );
 
         /*on click: new activity opens allowing the user to select an app
         to add to the list*/
@@ -137,7 +161,7 @@ public class ProfileFragment extends Fragment {
             //add the app to the AppUsageManager
             ComponentName cm = data.resolveActivity(getActivity().getPackageManager());
             String appPackageName = cm.getPackageName();
-            AppInfo newApp = AppUsageManager.addApp(getContext(), appPackageName);
+            AppData newApp = AppManager.addApp(getContext(), appPackageName);
 
             //add the view to the app list
             addAppToList(newApp);
@@ -150,24 +174,43 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStop(){
         super.onStop();
-        AppUsageManager.writeAppsToLocalFile(getContext());
+        AppManager.writeAppsToLocalFile(getContext());
     }
 
     /**
      * Add an app to the tracked apps list
      */
-    private void addAppToList(AppInfo newApp){
+    private void addAppToList(AppData newApp){
         LinearLayout appList = rootView.findViewById(R.id.apps_list);
         AppListItem ali = new AppListItem(rootView.getContext(), null);
         ali.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        //initialize the view
         ali.setApp(newApp);
+        ali.setUsageTime(AppUsageManager.getUsageTime(newApp.getPackageName()));
+
+        //determine background color for the view
         if(alternate_background)
             ali.setBackground(rootView.getContext().getDrawable(R.color.light_grey));
         else
             ali.setBackground(rootView.getContext().getDrawable(R.color.med_grey));
         alternate_background = !alternate_background;
+
+        //add to list
         appList.addView(ali);
+
+        //set click listener to remove the tracked app
+        ali.setRemoveClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AppManager.removeApp(newApp.getPackageName());
+                appList.removeAllViews();
+                alternate_background = false;
+                for(AppData ai: AppManager.getApps())
+                    addAppToList(ai);
+            }
+        });
     }
 }
