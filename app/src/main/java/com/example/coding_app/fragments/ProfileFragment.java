@@ -22,6 +22,7 @@ import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.productivity.AppData;
 import com.example.coding_app.models.productivity.AppManager;
 import com.example.coding_app.models.productivity.AppUsageManager;
+import com.example.coding_app.models.productivity.PushNotificationManager;
 import com.example.coding_app.views.AppListItem;
 import com.example.coding_app.views.ChallengeListItem;
 
@@ -42,8 +43,9 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         super.onCreateView(inflater, container, savedInstanceState);
 
-        if(checkPermissions()) {
+        if(AppUsageManager.checkPermissions(getContext())) {
             AppUsageManager.init(getContext());
+            PushNotificationManager.init(getContext());
             rootView = inflater.inflate(R.layout.profile_layout, null);
             initChallengesCompletedView();
             initSuggestedChallenge();
@@ -58,15 +60,6 @@ public class ProfileFragment extends Fragment {
         }
 
         return rootView;
-    }
-
-    /**
-     * Check if permission to view app usage is granted.
-     */
-    private boolean checkPermissions(){
-        AppOpsManager appOps = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
-        int mode = appOps.checkOpNoThrow("android:get_usage_stats", android.os.Process.myUid(), getContext().getPackageName());
-        return mode == AppOpsManager.MODE_ALLOWED;
     }
 
     /**

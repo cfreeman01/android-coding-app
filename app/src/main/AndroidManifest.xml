@@ -24,6 +24,14 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver android:name=".models.productivity.PushNotificationManager"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="models.productivity.alarm" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

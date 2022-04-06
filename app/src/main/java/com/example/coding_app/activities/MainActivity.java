@@ -15,6 +15,7 @@ import com.example.coding_app.models.challenge.ChallengeManager;
 import com.example.coding_app.models.language.LanguageManager;
 import com.example.coding_app.models.productivity.AppManager;
 import com.example.coding_app.models.productivity.AppUsageManager;
+import com.example.coding_app.models.productivity.PushNotificationManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 

@@ -25,8 +25,8 @@ import java.util.Map;
  */
 public class AppManager {
 
-    private static final String TAG = "AppUsageManager";
-    private static final String PATH = "data/data/com.example.coding_app.models.productivity/tracked_apps.json";
+    public static final String TAG = "AppUsageManager";
+    public static final String PATH = "data/data/com.example.coding_app.models.productivity/tracked_apps.json";
 
     private static Map<String, AppData> trackedApps = new HashMap<String, AppData>();
 
