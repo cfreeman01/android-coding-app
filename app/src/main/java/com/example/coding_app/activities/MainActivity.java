@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.coding_app.R;
 import com.example.coding_app.fragments.ChallengeListFragment;
+import com.example.coding_app.fragments.CodingEnvironmentFragment;
 import com.example.coding_app.fragments.ProfileFragment;
 import com.example.coding_app.models.Judge.Judge;
 import com.example.coding_app.models.challenge.ChallengeManager;
@@ -40,6 +43,33 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         createMainBottomNavView();
+
+        //check if coding challenge should be launched
+        Intent intent = getIntent();
+        if(intent != null && intent.getExtras() != null) {
+            String challengeName = intent.getExtras().getString("challengeName");
+            if (challengeName != null) {
+                Bundle args = new Bundle();
+                args.putString("Challenge", challengeName);
+                replaceMainFragment(CodingEnvironmentFragment.class, args);
+            }
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+        this.setIntent(intent);
+
+        //check if coding challenge should be launched
+        if(intent != null && intent.getExtras() != null) {
+            String challengeName = intent.getExtras().getString("challengeName");
+            if (challengeName != null) {
+                Bundle args = new Bundle();
+                args.putString("Challenge", challengeName);
+                replaceMainFragment(CodingEnvironmentFragment.class, args);
+            }
+        }
     }
 
     /**

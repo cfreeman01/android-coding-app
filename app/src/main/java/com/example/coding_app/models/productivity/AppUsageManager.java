@@ -23,6 +23,7 @@ public class AppUsageManager {
      * Initialize AppUsageManager
      */
     public static void init(Context context){
+        if(usageStatsManager != null) return;
         //get usage stats for all apps in the last week
         usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
         Calendar calendar = Calendar.getInstance();

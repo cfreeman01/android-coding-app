@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment {
         infoBox.setText(
                 "Tracking an app can help you stay more productive by: \n\n" +
                 "1) Showing you the amount of time you used the app in the last week\n\n" +
-                "2) Sending you notifications with suggestions for coding challenges while using the app"
+                "2) Sending you notifications with suggestions for coding challenges while you are using the app"
         );
 
         /*on click: new activity opens allowing the user to select an app

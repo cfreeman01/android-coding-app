@@ -11,10 +11,12 @@ import java.util.Map;
  * Static class for managing all of the coding challenges
  */
 public class ChallengeManager {
-    private static Map<String, Challenge> challenges = new HashMap<String, Challenge>();
+    private static Map<String, Challenge> challenges;
 
     //initialize challenge data
     public static void init(Context context){
+        if(challenges != null) return;
+        challenges = new HashMap<String, Challenge>();
         challenges.put("Hello World!", new Challenge(context, "hello_world.json"));
         challenges.put("Longest Common Prefix", new Challenge(context, "longest_common_prefix.json"));
         challenges.put("Kth Largest Element", new Challenge(context, "kth_largest.json"));

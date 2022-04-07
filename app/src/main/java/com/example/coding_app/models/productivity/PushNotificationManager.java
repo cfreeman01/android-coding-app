@@ -9,12 +9,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.example.coding_app.R;
+import com.example.coding_app.activities.MainActivity;
 import com.example.coding_app.models.JSONFileHandler;
 import com.example.coding_app.models.challenge.Challenge;
 import com.example.coding_app.models.challenge.ChallengeManager;
@@ -65,6 +67,8 @@ public class PushNotificationManager extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.e("START", "MEMEMEMEME");
+        ChallengeManager.init(context);
+        AppUsageManager.init(context);
         if(AppUsageManager.checkPermissions(context)) {
 
             Boolean trackedAppRunning = false; //will be set to true if a tracked app has recently run
@@ -91,7 +95,6 @@ public class PushNotificationManager extends BroadcastReceiver {
                 return;
             }
             String[] trackedAppNames = (String[]) JSONFileHandler.getDataFromLocalFile(context, AppManager.PATH, String[].class);
-
             //get recently run apps
             List<String> recentAppNames = AppUsageManager.getRecentlyRunningApps();
             if (recentAppNames != null) {
@@ -106,13 +109,13 @@ public class PushNotificationManager extends BroadcastReceiver {
                     if(trackedAppRunning) break;
                 }
             }
-
             //write result to file
             JSONFileHandler.writeDataToLocalFile(context, PATH, trackedAppRunning);
 
             //if a tracked app has started running in the last minute, send a push notification
-            if(!previousResult.booleanValue() && trackedAppRunning)
+            if(!previousResult.booleanValue() && trackedAppRunning) {
                 createNotification(context);
+            }
         }
     }
 
@@ -124,17 +127,28 @@ public class PushNotificationManager extends BroadcastReceiver {
 
         createNotificationChannel(context);
 
+        //set the notification's tap action
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.putExtra("challengeName", suggestedChallengeName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //create the notification object
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_code_24_purple)
                 .setContentTitle("Solve Your Next Coding Challenge")
                 .setContentText(suggestedChallengeName)
                 .setChannelId(CHANNEL_ID)
                 .setColor(context.getResources().getColor(R.color.light_grey))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
 
+        //send the notification
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-        Random notification_id = new Random();
-        notificationManager.notify(notification_id.nextInt(100), builder.build());
+        notificationManager.notify(0, builder.build());
     }
 
     /**
