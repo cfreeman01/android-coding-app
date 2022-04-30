@@ -137,7 +137,6 @@ public class Judge {
                                     getSubmissionBatch(context, tokens, jrh);
                                 }
                             }, 100);
-                            getSubmissionBatch(context, tokens, jrh);
                         }
                     }
 

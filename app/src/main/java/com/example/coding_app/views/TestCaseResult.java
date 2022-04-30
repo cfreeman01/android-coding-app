@@ -56,7 +56,7 @@ public class TestCaseResult extends FrameLayout {
         //status id 5: time limit exceeded
         else if(result.status_id == 5){
             resultColor = context.getResources().getColor(R.color.monokia_pro_red);
-            resultHeader.setText("Test Case " + testCaseNum + ": Wrong Answer");
+            resultHeader.setText("Test Case " + testCaseNum + ": Time Limit Exceeded");
             resultString = "Time limit exceeded.";
         }
 

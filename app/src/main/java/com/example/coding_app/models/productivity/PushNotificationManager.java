@@ -66,7 +66,6 @@ public class PushNotificationManager extends BroadcastReceiver {
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.e("START", "MEMEMEMEME");
         ChallengeManager.init(context);
         AppUsageManager.init(context);
         if(AppUsageManager.checkPermissions(context)) {
@@ -142,7 +141,7 @@ public class PushNotificationManager extends BroadcastReceiver {
                 .setContentText(suggestedChallengeName)
                 .setChannelId(CHANNEL_ID)
                 .setColor(context.getResources().getColor(R.color.light_grey))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
@@ -163,7 +162,6 @@ public class PushNotificationManager extends BroadcastReceiver {
             // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-            Log.e("SEND", "MEMEMEMEME");
         }
     }
 }
