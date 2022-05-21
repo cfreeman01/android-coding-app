@@ -10,4 +10,5 @@ An app that allows users to solve coding challenges on their Android smartphone.
   - Users can enable push notifications to be sent while they are using certain apps; these notifications contain suggestions for coding challenges
 ## Demo Videos
   https://youtu.be/5SVG6o0HtrE
+  <br/>
   https://youtu.be/-0dBn9g1fkM
